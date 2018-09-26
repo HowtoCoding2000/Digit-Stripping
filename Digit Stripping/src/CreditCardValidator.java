@@ -9,6 +9,7 @@ public class CreditCardValidator
 		static String cardNumberString = "";
 		static long cardNumber = 0;
 		static Scanner userIntput = new Scanner(System.in);
+		static Scanner userStringput = new Scanner(System.in);
 		static boolean lessThan16NumbersEntered = true;
 		static long [] cardNumberArray = new long [16];
 		static long [] generatedCreditCards = new long[100];
@@ -130,7 +131,7 @@ public class CreditCardValidator
 				while (cardNumberString.length() < 16)
 					{
 						System.out.println("Input a 16 digit number.");
-						cardNumberString = userIntput.nextLine();
+						cardNumberString = userStringput.nextLine();
 					}
 				cardNumber = Long.parseLong(cardNumberString);
 				for (int i = 0; i < 16; i++)
@@ -152,12 +153,21 @@ public class CreditCardValidator
 					{
 						cardNumber = Long.parseLong(creditCardNumbers.next());
 						System.out.println(cardNumber);
-						for (int i = 0; i < 16; i++)
+						
+						//transfer card number to array
+						for (int i = 15; i > -1; i--)
 							{
 								cardNumberArray[i] = cardNumber % 10;
 								cardNumber /= 10;
 							}
-						for (int i = 1; i < 16; i += 2)
+//						for (int i = 0; i < 16; i++)
+//							{
+//								System.out.print(cardNumberArray[i]);
+//							}
+//						System.out.println();
+						
+						//double alternating digits
+						for (int i = 0; i < 16; i += 2)
 							{
 								if (cardNumberArray[i] * 2 < 10)
 									{
@@ -167,29 +177,35 @@ public class CreditCardValidator
 									{
 										doubledDigit = cardNumberArray[i] * 2;
 										doubledDigit1 = doubledDigit % 10;
-										doubledDigit /= 10;
+										doubledDigit = doubledDigit / 10;
 										doubledDigit += doubledDigit1;
 										cardNumberArray[i] = doubledDigit;
 									}
 							}
+//						for (int i = 0; i < 16; i++)
+//							{
+//								System.out.print(cardNumberArray[i]);
+//							}
+//						System.out.println();
+						
+						//add all digits
+						sumOfAllDigits = 0;
 						for (int i = 0; i < 16; i++)
 							{
-								System.out.print(cardNumberArray[i]);
+								sumOfAllDigits += cardNumberArray[i];
+//								System.out.println(sumOfAllDigits);
 							}
-						System.out.println();
-						for (int i = 0; i < 16; i++)
-							{
-								sumOfAllDigits = sumOfAllDigits + cardNumberArray[i];
-							}
-						System.out.println(sumOfAllDigits);
+//						System.out.println(sumOfAllDigits);
+						
+						//determine if valid
 						if (sumOfAllDigits % 10 == 0)
 							{
 								numberOfPotentiallyValidCardNumbers++;
-								System.out.println("valid");
+//								System.out.println("valid");
 							}
 						else
 							{
-								System.out.println("invalid");
+//								System.out.println("invalid");
 							}
 					}
 				System.out.println(numberOfPotentiallyValidCardNumbers + " of the numbers in the file are potentially valid credit card numbers.");
@@ -240,14 +256,15 @@ public class CreditCardValidator
 			}
 		public static void checkIfDivisableByTen()
 			{
-				if (sumOfAllDigits % 10 == 0)
-					{
-						System.out.println("That is a potentially valid credit card number.");
-					}
-				else
-					{
-						System.out.println("That is not a valid credit card number.");
-					}
+				System.out.println(sumOfAllDigits % 10 == 0 ? "That is a potentially valid credit card number." : "That is not a valid credit card number.");
+//				if (sumOfAllDigits % 10 == 0)
+//					{
+//						System.out.println("That is a potentially valid credit card number.");
+//					}
+//				else
+//					{
+//						System.out.println("That is not a valid credit card number.");
+//					}
 			}
 		public static void ifValidAddToGeneratedCreditCards()
 			{
